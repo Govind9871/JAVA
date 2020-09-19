@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
 public class l001{
 
     public static class Edge{
@@ -170,7 +171,7 @@ public class l001{
     // get connected component 
     public static int GCC(){
         int count = 0;
-        boolean[] vis = boolean[N];
+        boolean[] vis = new boolean[N];
         for(int i=0;i<N;i++){
             if( !vis[i] ){
                 count++;
@@ -182,17 +183,115 @@ public class l001{
 
     public static void dfs( int src, boolean[] vis ){
         vis[src] = true;
-        for( Edge e : graph(src) ){
-            if( !vis(e.v) ){
+        for( Edge e : graph[src] ){
+            if( !vis[e.v] ){
                 dfs( e.v, vis );
             }
+        }
+    }
+
+    // BFS
+    public static void BFS_1(int src, boolean[] vis ){
+        LinkedList<Integer> que = new LinkedList<>();
+        que.add( src );
+        while( que.size() != 0 ){
+            int vtx = que.removeFirst();
+            // if( vis[vtx] ){
+            //     System.out.print("Cycle:" + vtx  );
+            //     continue;
+            // }
+            System.out.print( vtx  + " ");
+
+            vis[vtx] = true;
+            for(Edge e : graph[vtx] ){
+                if( !vis[ e.v ] ){
+                    que.addLast( e.v );
+                } 
+            }
+        }
+    }
+
+    public static void BFS_2( int src, boolean[] vis ){ // level wise printing of nodes
+        LinkedList<Integer> que = new LinkedList<>();
+        que.addLast( src) ;
+        while( que.size() != 0 ){
+            int size = que.size();
+            while( size-->0 ){
+                
+                int vtx = que.removeFirst();
+                if( vis[vtx] ) continue;
+                System.out.print( vtx + " ");
+                vis[vtx] = true;
+                for( Edge e : graph[vtx] ){
+                    if( !vis[e.v] ){
+                        que.addLast( e.v );
+                    }
+                }
+            }
+            System.out.println();
+        }
+    }
+
+    public static void BFS_3( int src, boolean[] vis ){// calculate time to reach certain node
+        LinkedList<Integer> que = new LinkedList<>();
+        que.addLast( src );
+        int level = 0;
+
+        while( que.size() != 0 ){
+            int size = que.size();
+            while( size-->0 ){
+                int vtx = que.removeFirst();
+
+                if( vtx == 6 ){
+                    System.out.println(level);
+                }
+
+                if( vis[vtx] ) continue;
+
+                vis[vtx] = true;
+
+                for( Edge e : graph[vtx] ){
+                    if( !vis[e.v] ){
+                        que.addLast( e.v );
+                    }
+                }
+            }
+            level++;
+        }
+    }
+
+    public static void BFS_3_2( int src, boolean[] vis ){
+        LinkedList<Integer> que = new LinkedList<>();
+        que.addLast( src);
+        vis[src] = true;
+        int level = 0;
+        
+        while( que.size() != 0 ){
+            int size = que.size();
+            while( size-->0 ){
+                int vtx = que.removeFirst();
+
+                if( vtx == 4 ){
+                    System.out.println( level );
+                    break;
+                } 
+
+                for( Edge e : graph[vtx] ){
+                    if( !vis[e.v] ){
+                        que.addLast( e.v );
+                        vis[e.v] = true;
+                    }
+                }
+            }
+            level++;
         }
     }
 
     public static void solve(){
         constructGraph();
         boolean[] vis = new boolean[N];
-        System.out.println( hamintonianPath(0,0,0,vis,"") );
+        //System.out.println( hamintonianPath(0,0,0,vis,"") );
+        BFS_3_2( 0, vis);
     }
 
     public static void main(String[] args ){
