@@ -66,47 +66,5 @@ public class l002_directedGraph{
         else System.out.println( ans );
     }
 
-    // leetcode 200 numsof island
-    int[] par;
-    public int findPar(int u){
-        if(par[u] == u) return u;
-        return par[u] = findPar(par[u]);
-    }
-
-    public int numIslands(char[][] grid) {
-        if(grid.length==0 || grid[0].length==0) return 0;
-        int n = grid.length;
-        int m = grid[0].length;
-        
-        par = new int[n*m];
-        int count=0;
-        for(int i=0;i<n*m;i++){
-            par[i] = i;
-            if(grid[i/m][i%m]=='1') count++;
-        }
-
-        for(int i=0;i<n;i++){
-            for(int j=0;j<m;j++){
-                if(grid[i][j] == '1'){
-                    int p1 = findPar(i*m+j);
-                    if(j+1 < m && grid[i][j+1] == '1'){
-                        int p2 = findPar(i*m+j+1);
-                        if(p1 != p2){
-                            par[p2] = p1;
-                            count--;
-                        }
-                    }
-
-                    if(i+1 < n && grid[i+1][j] == '1'){
-                        int p2 = findPar((i+1)*m+j);
-                        if(p1 != p2){
-                            par[p2] = p1;
-                            count--;
-                        }
-                    }
-                }
-            }
-        }
-        return count;
-    }
+    
 }
