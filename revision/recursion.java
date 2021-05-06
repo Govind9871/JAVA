@@ -183,6 +183,90 @@ public class recursion{
 
     }
 
+    // ********************************************************/
+
+    public static String[] word = { ",;" , "abc" , "def" , "ghi" , "jkl" ,"mno", "pqrs" , "tu" , 
+                                    "vwx" , "yz"};
+
+    public static ArrayList<String> getKPC( String str ){
+
+        if( str.length() == 0 ){
+            ArrayList<String> base = new ArrayList<>();
+            base.add("");
+            return base;
+        }
+
+        char ch = str.charAt(0);
+        String rs = str.substring(1);
+        ArrayList<String> res = getKPC( rs );
+        ArrayList<String> mres = new ArrayList<>();
+
+        int idx = ch - '0';
+        String S = word[idx];
+
+        for(int i=0; i< S.length(); i++ ){
+            char a = S.charAt(i);
+            for( String val : res ){
+                mres.add( a + val );
+            }
+        }
+
+        return mres;
+
+    }
+
+    public static ArrayList<String> getStairPaths( int n ){
+        if( n == 0 ){
+            ArrayList<String> base = new ArrayList<>();
+            base.add("");
+            return base;
+        }
+
+        ArrayList<String> mres = new ArrayList<>();
+        for( int step = 1; step <= 3 && n - step >= 0; step++ ){
+            ArrayList<String> res = getStairPaths( n - step );
+            for( String val : res ){
+                mres.add( step + val );
+            }
+
+        }
+
+        return mres;
+    }
+
+    public static ArrayList<String> getMazePaths( int sr, int sc, int dr, int dc){
+        if( sr == dr && sc == dc ){
+            ArrayList<String> base = new ArrayList<>();
+            base.add("");
+            return base;
+        } 
+
+        ArrayList<String> mlist = new ArrayList<>();
+
+        for(int move = 1; move <= dc - sc; move++ ){
+            ArrayList<String> res = getMazePaths( sr , sc + move, dr, dc );
+            for( String val : res ){
+                mlist.add( "H" + move + val );
+            }
+        }
+        
+        for(int move = 1; move <= dr - sr; move++ ){
+            ArrayList<String> res = getMazePaths( sr + move , sc, dr, dc );
+            for( String val : res ){
+                mlist.add( "V" + move + val );
+            }
+        }
+
+        for(int move = 1; move <= dc - sc && move <= dr - sr ; move++ ){
+            ArrayList<String> res = getMazePaths( sr + move, sc + move, dr, dc );
+            for( String val : res ){
+                mlist.add( "D" + move + val );
+            }
+        }
+
+        return mlist;
+    }
+
     public static void solve(){
         //pIncreasing(5);
         //pID( 5 );
@@ -197,6 +281,9 @@ public class recursion{
         //System.out.println( maxOfArray1( arr, n ) );
         //System.out.println( printFirstIndex(  arr, 0, 2 ) );
         //System.out.println( printLastIndex( arr, 0 , 2 ) );
-        System.out.println( getAllSubsequence( "abc" ) );
+        //System.out.println( getAllSubsequence( "abc" ) );
+        //System.out.println( getKPC( "87" ) );
+        //System.out.println( getStairPaths(4) );
+        System.out.println( getMazePaths(0 , 0 , 2, 2 ) );
     }
 }
