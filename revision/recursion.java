@@ -267,6 +267,130 @@ public class recursion{
         return mlist;
     }
 
+    public static void printSubsequence( String str , String ans ){
+        if( str.length() == 0 ){
+            System.out.println( ans );
+            return;
+        }
+
+        char ch = str.charAt(0);
+        String ros = str.substring(1);
+        printSubsequence( ros ,  ans  + ch );
+        printSubsequence( ros , ans );
+    }
+
+    public static void printKPC( String str, String ans ){
+
+        if( str.length() == 0 ) {
+            System.out.println( ans );
+            return;
+        }
+
+        char ch = str.charAt(0);
+        int idx = ch - '0';
+        String W = word[idx];
+
+        for(int i=0; i<W.length();i++){
+            printKPC( str.substring(1) , ans + W.charAt(i) );
+        }
+    }
+
+    public static void printStairPaths( int n  , String psf ){
+        if( n == 0 ){
+            System.out.println( psf );
+            return;
+        }
+
+        for( int step = 1; step<=3 && n - step >= 0 ; step++ ){
+            printStairPaths( n - step , psf + step );
+        }
+    }
+
+    public static void printMaxePaths(int sr, int sc, int dr, int dc, String psf  ){
+        if( sr > dr || sc > dc ) return;
+        
+        if( sr == dr && sc == dc ) {
+            System.out.println( psf );
+            return;
+        }
+
+        printMaxePaths( sr, sc + 1, dr, dc, psf + "h");
+        printMaxePaths( sr + 1, sc, dr, dc, psf + "v");
+        
+    }
+
+    public static void printMazePathsJumps( int sr, int sc, int dr, int dc, String psf ){
+        if( sr == dr && sc == dc ){
+            System.out.println( psf );
+        } 
+
+        for(int move = 1; move <= dc - sc; move++ ){
+            printMazePathsJumps( sr , sc + move, dr, dc , psf + "H" + move);
+        }
+        
+        for(int move = 1; move <= dr - sr; move++ ){
+            printMazePathsJumps( sr + move, sc, dr, dc , psf + "V" + move);
+        }
+
+        for(int move = 1; move <= dc - sc && move <= dr - sr ; move++ ){
+            printMazePathsJumps( sr + move, sc + move, dr, dc , psf + "D" + move);
+        }
+    }
+
+    public static void printPermutations( String str, String ssf ){
+        if( str.length() == 0 ){
+            System.out.println( ssf );
+            return;
+        }
+        
+        for(int i = 0; i < str.length(); i++ ){
+
+            char ch = str.charAt(i);
+            String left = str.substring(0,i);
+            String right = str.substring(i + 1);
+
+            printPermutations( left + right , ssf + ch ); 
+        }
+
+    }
+
+    public static char[] alpha = { '0','a','b','c','d','e','f','g','h','i','j','k','l','m','n',
+                                    'o','p','q','r','s','t','u','v','w','x','y','z'};
+
+
+    public static void printEncodings( String str , String asf ){
+        if( str.length() == 0 ){
+            System.out.println( asf );
+            return;
+        }else if( str.length() == 1){
+            int num = Integer.parseInt(str);
+            if( num == 0 ){
+                return;
+            }
+            char ch = (char)( 'a' + num - 1);
+            System.out.println( asf + ch );   
+        }else {
+            char ch = str.charAt(0);
+            String rs = str.substring(1);
+
+            if( ch == '0') return;
+            else {
+                int num = ch - '0';
+                char apla = (char)( 'a' + num - 1);
+                printEncodings( rs , asf + apla );
+            }
+
+            String ch12 = str.substring(0,2);
+            String rs12 = str.substring(2);
+
+            int num12 = Integer.parseInt( ch12 );
+            char apla12 = (char)('a' + num12 - 1);
+
+            printEncodings( rs12 , asf + apla12 );
+        }
+
+        
+    }
     public static void solve(){
         //pIncreasing(5);
         //pID( 5 );
@@ -284,6 +408,13 @@ public class recursion{
         //System.out.println( getAllSubsequence( "abc" ) );
         //System.out.println( getKPC( "87" ) );
         //System.out.println( getStairPaths(4) );
-        System.out.println( getMazePaths(0 , 0 , 2, 2 ) );
+        //System.out.println( getMazePaths(0 , 0 , 2, 2 ) );
+        //printSubsequence( "abc" , "");
+        //printKPC( "786" , "");
+        //printStairPaths( 4 , "");
+        //printMaxePaths( 0 , 0 , 2, 2, "");
+        //printMazePathsJumps( 0 , 0 , 3, 3, "");
+        //printPermutations( "abcd" , "");
+        printEncodings( "12103" , "");
     }
 }
