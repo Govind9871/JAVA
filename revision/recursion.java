@@ -388,9 +388,151 @@ public class recursion{
 
             printEncodings( rs12 , asf + apla12 );
         }
-
-        
     }
+
+    /* Backtraking */
+
+    public static void floodfill( int[][] maze, int sr, int sc, String asf ){
+        if( sr < 0 || sc < 0 || sr == maze.length || sc == maze[0].length || maze[sr][sc] == 1 ){
+            return;
+        }
+
+        if( sr == maze.length - 1 && sc == maze[0].length - 1 ){
+            System.out.println( asf );
+            return;
+        }
+
+        maze[sr][sc] = 1;
+        floodfill( maze, sr - 1, sc, asf + 't' );// top
+        floodfill( maze, sr, sc + 1, asf + 'r' );//right
+        floodfill( maze, sr + 1, sc, asf + 'd' );//down
+        floodfill( maze, sr, sc - 1, asf + 'l' );//left
+        maze[sr][sc] = 0;
+    }
+
+    public static void printTargetSubsets(int[] arr, int idx, String set, int sos, int tar ){
+        if( idx == arr.length || sos == tar ){
+            if( sos == tar ){
+                System.out.println( set + ".");
+            }
+            return;
+        }
+        if( sos == tar ){
+            System.out.println( set + ".");
+            return;
+        }
+        if( sos + arr[idx] <= tar ){
+            printTargetSubsets( arr, idx + 1, set + arr[idx] + ",", sos + arr[idx], tar );
+        }
+        printTargetSubsets( arr, idx + 1, set, sos, tar );
+
+    }
+
+    public static int oneDqueenCombination( boolean[] box, int idx, int tnq, int qsf, String ans ){
+        if( tnq == qsf ){
+            System.out.println( ans );
+            return 1;
+        }
+
+        int count = 0;
+        for( int i = idx; i < box.length; i++ ){
+            count+= oneDqueenCombination( box, i + 1, tnq, qsf + 1, ans + "b" + i + "q" + qsf + " ");
+        }
+        return count;
+    }
+    
+    public static int oneDqueenPermutation( boolean[] box, int idx, int tnq, int qsf, String ans ){
+        if( tnq == qsf ){
+            System.out.println( ans );
+            return 1;
+        }
+
+        int count = 0;
+        for( int i = idx; i < box.length; i++ ){
+            if( !box[i] ){
+                box[i] = true;
+                count+= oneDqueenPermutation( box, 0, tnq, qsf + 1, ans + "b" + i + "q" + qsf + " ");
+                box[i] = false;
+            }
+        }
+        return count;
+    }
+
+    public static int twoDqueenCombination( boolean[][] box, int idx, int tnq, int qsf, String ans ){
+        if( tnq == qsf ){
+            System.out.println( ans );
+            return 1;
+        }
+
+        int count = 0;
+        int n = box.length;
+        int m = box[0].length;
+        for( int i = idx; i < n * m; i++ ){
+            int r = i / m;
+            int c = i % m;
+            count+= twoDqueenCombination( box, i + 1, tnq, qsf + 1, ans + "(" + r + "," + c + ") ");
+        }
+        return count;
+    }
+
+    public static int twoDqueenPermutation( boolean[][] box, int idx, int tnq, int qsf, String ans ){
+        if( tnq == qsf ){
+            System.out.println( ans );
+            return 1;
+        }
+
+        int count = 0;
+        
+        int n = box.length;
+        int m = box[0].length;
+        for( int i = idx; i < n * m; i++ ){
+            int r = i / m;
+            int c = i % m;
+            if( !box[r][c] ){
+                box[r][c] = true;
+                count+= twoDqueenPermutation( box, 0, tnq, qsf + 1, ans + "(" + r + "," + c + ") ");
+                box[r][c] = false;
+            }
+        }
+        return count;
+    }
+
+    // Nqueen*****************************************************************
+
+    public static boolean isSafeToPlace( boolean[][] box, int r, int c ){
+        int[][] dirC = { {-1,-1}, {-1,0}, {-1,1} };
+
+        for(int i = 0; i < dirC.length; i++ ){
+            for(int rad = 1; rad <= box.length; rad++ ){
+                int x = r + dirC[i][0] * rad ;
+                int y = c + dirC[i][1] * rad ;
+
+                if( x >= 0 && y >= 0 && x < box.length && y < box[0].length && box[x][y] )
+                return false; 
+            }
+        }
+
+        return true;
+    }
+
+    public static void Nqueen(boolean[][] box, int row, int tnq, String ans ){
+        if( tnq == 0 ){
+            System.out.println( ans );
+            return;
+        }
+
+        int m = box[0].length;
+        for(int i = 0; i < m; i++ ){
+            if( isSafeToPlace(box, row, i) ){
+                box[row][i] = true;
+                Nqueen( box, row + 1, tnq - 1, ans + "(" + row + "," + i + ") ");
+                box[row][i] = false;
+            }
+        } 
+    }
+
+    
+
     public static void solve(){
         //pIncreasing(5);
         //pID( 5 );
@@ -415,6 +557,19 @@ public class recursion{
         //printMaxePaths( 0 , 0 , 2, 2, "");
         //printMazePathsJumps( 0 , 0 , 3, 3, "");
         //printPermutations( "abcd" , "");
-        printEncodings( "12103" , "");
+        //printEncodings( "12103" , "");
+        int[][] maze = {{0, 1, 0},
+                        {0, 0, 0},
+                        {1, 0, 0}};
+        //floodfill( maze , 0, 0, "");
+        int[] a = {10 , 20, 30, 40 ,50 };
+        //printTargetSubsets( a, 0, "", 0, 60 );
+        boolean[][] box = new boolean[4][4];
+        int tnq = 4;
+        //System.out.println( oneDqueenCombination(box , 0, tnq , 0, "") );        
+        //System.out.println( oneDqueenPermutation(box , 0, tnq , 0, "") );
+        //System.out.println( twoDqueenCombination(box , 0, tnq , 0, "") );
+        //System.out.println( twoDqueenPermutation(box , 0, tnq , 0, "") );
+        Nqueen( box, 0, tnq, "");
     }
 }
