@@ -531,7 +531,42 @@ public class recursion{
         } 
     }
 
-    
+    // knight tour***********************************************************
+
+    public static int knightTour( int[][] board, int r, int c , int move , int[][] Kdir ){
+        if( move == board.length * board[0].length ){
+            board[r][c] = move;
+            displayBoard( board );
+            return 1;
+        }
+
+        int count = 0;
+        board[r][c] = move;
+        for(int i = 0; i < Kdir.length; i++ ){
+            int x = r + Kdir[i][0];
+            int y = c + Kdir[i][1];
+            if( x >= 0 && y >= 0 && x < board.length && y < board[0].length && board[x][y] == 0 ){
+                count+= knightTour( board, x, y, move + 1, Kdir);
+                board[x][y] = 0;
+            }
+        }
+
+        return count;
+    }
+
+    public static void displayBoard( int[][] board){
+
+        for(int[] row : board ){
+            for(int elm : row ){
+                System.out.print( elm + "   ");
+            }
+            System.out.println();
+        }
+        System.out.println();
+        System.out.println();
+        System.out.println();
+
+    }
 
     public static void solve(){
         //pIncreasing(5);
@@ -570,6 +605,8 @@ public class recursion{
         //System.out.println( oneDqueenPermutation(box , 0, tnq , 0, "") );
         //System.out.println( twoDqueenCombination(box , 0, tnq , 0, "") );
         //System.out.println( twoDqueenPermutation(box , 0, tnq , 0, "") );
-        Nqueen( box, 0, tnq, "");
+        //Nqueen( box, 0, tnq, "");
+        int[][] Kdir = { {-2, 1}, {-1, 2}, {1, 2}, {2, 1}, {2, -1}, {1, -2}, {-1, -2}, {-2, -1} };
+        System.out.println( knightTour(new int[5][5], 2, 0, 1 , Kdir ) );
     }
 }
