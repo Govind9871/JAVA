@@ -91,11 +91,42 @@ public class l001{
         }
     }
 
+    public static void printTriangle( int n ){
+
+        for(int i = 1; i <= n; i++ ){
+
+            for(int j = n - i; j >= 1; j-- ){
+                System.out.print(" ");
+            }
+            for(int k = 1; k <= i; k++ ){
+                System.out.print( "* ");
+            }
+            System.out.println();
+        }
+    }
+
+    public static void printReversePyiramid( int n ){
+
+        for( int i = 0; i < n; i++ ){
+
+            for( int j = 0; j < i; j++ ){
+                System.out.print(" ");
+            }
+            for( int x = 1; x <= n - i; x++ ){
+                System.out.print( x + " ");
+            }
+            System.out.println();
+        }
+    }
+
+
     public static void solve(){
         //pattern1( 9 );
         //pattern1Best( 9 );
         //numberPattern1( 5 );
         //numberPattern1Reverse( 5 );
-        numberPattern2( 5 );
+        //numberPattern2( 5 );
+        //printTriangle( 7 );
+        printReversePyiramid( 6 );
     }
 }
